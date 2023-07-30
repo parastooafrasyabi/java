@@ -1,0 +1,439 @@
+import java.awt.EventQueue;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+import simpleCRUD.DBConnector;
+
+
+public class project {
+
+    public JFrame     frame;
+    public JPanel     panel;
+    public JTextField txtXstart;
+    public JTextField txtYstart;
+    public JTextField txtLength;
+    public JTextField txtWidth;
+    public JTextField txtXcenter;
+    public JTextField txtYcenter;
+    public JTextField txtRadius;
+    public JTextField txtX;
+    public JTextField txtY;
+    public JTextField txtX_1;
+    public JTextField txtY_1;
+    public JTextField txtX_2;
+    public JTextField txtY_2;
+    public JButton    btnDrawing;
+    public JButton    btnSaveInDb;
+    public String     s1;
+
+
+    /**
+     * Launch the application.
+     */
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    project window = new project();
+                    window.frame.setVisible(true);
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+
+    /**
+     * Create the application.
+     */
+    public project() {
+        initialize();
+    }
+
+
+    /**
+     * Initialize the contents of the frame.
+     */
+    private void initialize() {
+        frame = new JFrame();
+        frame.setBounds(100, 100, 450, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(null);
+
+        JRadioButton r1 = new JRadioButton("rectangle");
+        r1.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                txtXstart.setVisible(true);
+                txtYstart.setVisible(true);
+                txtLength.setVisible(true);
+                txtWidth.setVisible(true);
+                txtXcenter.setVisible(false);
+                txtYcenter.setVisible(false);
+                txtRadius.setVisible(false);
+                txtX.setVisible(false);
+                txtY.setVisible(false);
+                txtX_1.setVisible(false);
+                txtY_1.setVisible(false);
+                txtX_2.setVisible(false);
+                txtY_2.setVisible(false);
+
+            }
+        });
+        r1.setBounds(24, 17, 109, 23);
+        frame.getContentPane().add(r1);
+
+        JRadioButton r2 = new JRadioButton("circle");
+        r2.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                txtXstart.setVisible(false);
+                txtYstart.setVisible(false);
+                txtLength.setVisible(false);
+                txtWidth.setVisible(false);
+                txtXcenter.setVisible(true);
+                txtYcenter.setVisible(true);
+                txtRadius.setVisible(true);
+                txtX.setVisible(false);
+                txtY.setVisible(false);
+                txtX_1.setVisible(false);
+                txtY_1.setVisible(false);
+                txtX_2.setVisible(false);
+                txtY_2.setVisible(false);
+
+            }
+        });
+        r2.setBounds(24, 40, 109, 23);
+        frame.getContentPane().add(r2);
+
+        JRadioButton r3 = new JRadioButton("triangle");
+        r3.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                txtXstart.setVisible(false);
+                txtYstart.setVisible(false);
+                txtLength.setVisible(false);
+                txtWidth.setVisible(false);
+                txtXcenter.setVisible(false);
+                txtYcenter.setVisible(false);
+                txtRadius.setVisible(false);
+                txtX.setVisible(true);
+                txtY.setVisible(true);
+                txtX_1.setVisible(true);
+                txtY_1.setVisible(true);
+                txtX_2.setVisible(true);
+                txtY_2.setVisible(true);
+
+            }
+        });
+        r3.setBounds(24, 66, 109, 23);
+        frame.getContentPane().add(r3);
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(r1);
+        bg.add(r2);
+        bg.add(r3);
+        frame.getContentPane().add(r1);
+        frame.getContentPane().add(r2);
+        frame.getContentPane().add(r3);
+        frame.setSize(613, 331);
+        frame.getContentPane().setLayout(null);
+
+        txtXstart = new JTextField();
+        txtXstart.setText("X_start");
+        txtXstart.setBounds(139, 18, 86, 20);
+        frame.getContentPane().add(txtXstart);
+        txtXstart.setColumns(10);
+        txtXstart.setVisible(false);
+
+        txtYstart = new JTextField();
+        txtYstart.setText("Y_start");
+        txtYstart.setBounds(139, 41, 86, 20);
+        frame.getContentPane().add(txtYstart);
+        txtYstart.setColumns(10);
+        txtYstart.setVisible(false);
+
+        txtLength = new JTextField();
+        txtLength.setText("length");
+        txtLength.setBounds(139, 67, 86, 20);
+        frame.getContentPane().add(txtLength);
+        txtLength.setColumns(10);
+        txtLength.setVisible(false);
+
+        txtWidth = new JTextField();
+        txtWidth.setText("width");
+        txtWidth.setBounds(139, 97, 86, 20);
+        frame.getContentPane().add(txtWidth);
+        txtWidth.setColumns(10);
+        txtWidth.setVisible(false);
+
+        txtXcenter = new JTextField();
+        txtXcenter.setText("X_center");
+        txtXcenter.setBounds(139, 18, 86, 20);
+        frame.getContentPane().add(txtXcenter);
+        txtXcenter.setColumns(10);
+        txtXcenter.setVisible(false);
+
+        txtYcenter = new JTextField();
+        txtYcenter.setText("Y_center");
+        txtYcenter.setBounds(139, 41, 86, 20);
+        frame.getContentPane().add(txtYcenter);
+        txtYcenter.setColumns(10);
+        txtYcenter.setVisible(false);
+
+        txtRadius = new JTextField();
+        txtRadius.setText("radius");
+        txtRadius.setBounds(139, 67, 86, 20);
+        frame.getContentPane().add(txtRadius);
+        txtRadius.setColumns(10);
+        txtRadius.setVisible(false);
+
+        txtX = new JTextField();
+        txtX.setText("X1");
+        txtX.setBounds(139, 18, 86, 20);
+        frame.getContentPane().add(txtX);
+        txtX.setColumns(10);
+        txtX.setVisible(false);
+
+        txtY = new JTextField();
+        txtY.setText("Y1");
+        txtY.setBounds(139, 41, 86, 20);
+        frame.getContentPane().add(txtY);
+        txtY.setColumns(10);
+        txtY.setVisible(false);
+
+        txtX_1 = new JTextField();
+        txtX_1.setText("X2");
+        txtX_1.setBounds(139, 67, 86, 20);
+        frame.getContentPane().add(txtX_1);
+        txtX_1.setColumns(10);
+        txtX_1.setVisible(false);
+
+        txtY_1 = new JTextField();
+        txtY_1.setText("Y2");
+        txtY_1.setBounds(139, 97, 86, 20);
+        frame.getContentPane().add(txtY_1);
+        txtY_1.setColumns(10);
+        txtY_1.setVisible(false);
+
+        txtX_2 = new JTextField();
+        txtX_2.setText("X3");
+        txtX_2.setBounds(139, 128, 86, 20);
+        frame.getContentPane().add(txtX_2);
+        txtX_2.setColumns(10);
+        txtX_2.setVisible(false);
+
+        txtY_2 = new JTextField();
+        txtY_2.setText("Y3");
+        txtY_2.setBounds(139, 159, 86, 20);
+        frame.getContentPane().add(txtY_2);
+        txtY_2.setColumns(10);
+
+        btnDrawing = new JButton("drawing");
+        btnDrawing.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if (txtXstart.isShowing()) {
+
+                    MyPanel panel = new MyPanel();
+                    JFrame app = new JFrame();
+                    app.getContentPane().add(panel);
+                    app.setSize(300, 300);
+                    app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    app.setVisible(true);
+
+                }
+                if (txtXcenter.isShowing()) {
+
+                    MyPanel1 panel = new MyPanel1();
+                    JFrame app = new JFrame();
+                    app.getContentPane().add(panel);
+                    app.setSize(300, 300);
+                    app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    app.setVisible(true);
+
+                }
+                if (txtX.isShowing()) {
+
+                    MyPanel2 panel = new MyPanel2();
+                    JFrame app = new JFrame();
+                    app.getContentPane().add(panel);
+                    app.setSize(300, 300);
+                    app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    app.setVisible(true);
+
+                }
+            }
+        });
+        btnDrawing.setBounds(326, 40, 89, 23);
+        frame.getContentPane().add(btnDrawing);
+
+        btnSaveInDb = new JButton("save in DB");
+        btnSaveInDb.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                if (txtXstart.isShowing()) {
+                    w1 w1 = new w1();
+                    w1.iseeert();
+                }
+                if (txtXcenter.isShowing()) {
+                    w2 w2 = new w2();
+                    w2.iseeert();
+                }
+                if (txtX.isShowing()) {
+                    w3 w3 = new w3();
+                    w3.iseeert();
+                }
+            }
+        });
+        btnSaveInDb.setBounds(326, 85, 118, 23);
+        frame.getContentPane().add(btnSaveInDb);
+        txtY_2.setVisible(false);
+
+    }
+
+
+    public class MyPanel extends JPanel {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
+
+        @Override
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            g.fillRect(Integer.parseInt(txtXstart.getText()), Integer.parseInt(txtYstart.getText()), Integer.parseInt(txtLength.getText()), Integer.parseInt(txtWidth.getText()));
+
+        }
+
+    }
+
+
+    public class MyPanel1 extends JPanel {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
+
+        @Override
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+
+            g.fillOval(Integer.parseInt(txtXcenter.getText()), Integer.parseInt(txtYcenter.getText()), Integer.parseInt(txtRadius.getText()), Integer.parseInt(txtRadius.getText()));
+
+        }
+
+    }
+
+
+    public class MyPanel2 extends JPanel {
+
+        /**
+         * 
+         */
+        private static final long serialVersionUID = 1L;
+
+
+        @Override
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            int x[] = { Integer.parseInt(txtX.getText()), Integer.parseInt(txtX_1.getText()), Integer.parseInt(txtX_2.getText()) };
+            int y[] = { Integer.parseInt(txtY.getText()), Integer.parseInt(txtY_1.getText()), Integer.parseInt(txtY_2.getText()) };
+            g.drawPolygon(x, y, 3);
+
+        }
+
+    }
+
+
+    public class w1 {
+
+        static final String sql = "insert into shapes(shape) values('rectangle')";
+
+
+        // public static void main(String[] args) {
+        //  iseeert();
+
+        // }
+
+        public void iseeert() {
+            try {
+                PreparedStatement ps = DBConnector.getConnection().prepareStatement(sql);
+                ps.execute();
+                System.out.println("Inserted");
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("not Inserted");
+            }
+        }
+    }
+
+
+    public class w2 {
+
+        static final String sql = "insert into shapes(shape) values('circle')";
+
+
+        // public static void main(String[] args) {
+        //  iseeert();
+
+        // }
+
+        public void iseeert() {
+            try {
+                PreparedStatement ps = DBConnector.getConnection().prepareStatement(sql);
+                ps.execute();
+                System.out.println("Inserted");
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("not Inserted");
+            }
+        }
+    }
+
+
+    public class w3 {
+
+        static final String sql = "insert into shapes(shape) values('triangle')";
+
+
+        // public static void main(String[] args) {
+        //  iseeert();
+
+        // }
+
+        public void iseeert() {
+            try {
+                PreparedStatement ps = DBConnector.getConnection().prepareStatement(sql);
+                ps.execute();
+                System.out.println("Inserted");
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("not Inserted");
+            }
+        }
+    }
+}
